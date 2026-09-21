@@ -1,0 +1,6 @@
+@Showlio.api_HostAddress = http://localhost:5271
+
+GET {{Showlio.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
