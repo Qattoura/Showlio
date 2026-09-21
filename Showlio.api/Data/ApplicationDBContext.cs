@@ -4,9 +4,9 @@ using Showlio.api.Models;
 
 namespace Showlio.api.Data
 {
-    public class ApplicationDBContext : DbContext 
+    public class ApplicationDbContext : DbContext 
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
             : base(options)
         { }
 
@@ -20,6 +20,17 @@ namespace Showlio.api.Data
         public DbSet<Service> Services { get; set; }
         public DbSet<ContactItem> ContactItems { get; set; }
         public DbSet<Template> Templates { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(ApplicationDbContext).Assembly);
+        }
+
 
     }
 }
