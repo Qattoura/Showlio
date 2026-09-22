@@ -15,6 +15,12 @@ namespace Showlio.api.Data.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .HasOne(p => p.User)
+                .WithMany(u => u.Portfolios)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .Property(p => p.PortfolioName)
                 .IsRequired()
                 .HasMaxLength(100);

@@ -1,4 +1,6 @@
-﻿namespace Showlio.api.Models
+﻿using Showlio.api.Identity;
+
+namespace Showlio.api.Models
 {
     public class Portfolio
     {
@@ -27,6 +29,8 @@
         // Navigation property
 
         public Template Template { get; set; } = null!;
+
+        public AppUser User { get; set; } = null!;
 
         public ICollection<Skill> Skills { get; set; } = new List<Skill>();
         public ICollection<Project> Projects { get; set; } = new List<Project>();
