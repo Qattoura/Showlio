@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
@@ -20,13 +21,19 @@ namespace Showlio.api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IValidator<LoginDto> _loginDtoValidator;
+        private readonly IValidator<RegisterDto> _registerDtoValidator;
 
         public AccountController(UserManager<AppUser> userManager,
-            ITokenService tokenService, ICurrentUserService currentUserService)
+            ITokenService tokenService, ICurrentUserService currentUserService,
+            IValidator<LoginDto> loginDtoValidator,
+            IValidator<RegisterDto> registerDtoValidator)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _currentUserService = currentUserService;
+            _loginDtoValidator = loginDtoValidator;
+            _registerDtoValidator = registerDtoValidator;
 
         }
 
@@ -35,6 +42,13 @@ namespace Showlio.api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto) 
         {
+            var validationResult = await _registerDtoValidator.ValidateAsync(registerDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             try 
             {
                 if (!ModelState.IsValid)
@@ -88,6 +102,14 @@ namespace Showlio.api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
+
+            var validationResult = await _loginDtoValidator.ValidateAsync(loginDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

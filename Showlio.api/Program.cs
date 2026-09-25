@@ -1,13 +1,18 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Showlio.api.Data;
+using Showlio.api.Filters;
 using Showlio.api.Identity;
+using Showlio.api.Interfaces.IRepositories;
 using Showlio.api.Interfaces.IService;
 using Showlio.api.Interfaces.IServices;
+using Showlio.api.Repositories;
 using Showlio.api.Services;
+using Showlio.api.validators.Portfolio;
 using System.Text;
 
 
@@ -56,6 +61,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IPortfolioService, PortfolioService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePortfolioDtoValidator>();
 
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>

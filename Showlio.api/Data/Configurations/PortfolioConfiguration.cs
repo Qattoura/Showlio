@@ -8,6 +8,7 @@ namespace Showlio.api.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Portfolio> builder)
         {
+
             builder
                 .HasOne(p => p.Template)
                 .WithMany(t => t.Portfolios)
@@ -43,6 +44,10 @@ namespace Showlio.api.Data.Configurations
             builder
                 .Property(p => p.ProfileImageReference)
                 .HasMaxLength(500);
+
+            // Only v1 constraint
+            builder.HasIndex(p => p.UserId)
+                    .IsUnique();
         }
     }
 }
