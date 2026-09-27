@@ -15,30 +15,13 @@ namespace Showlio.api.Services
     {
 
         private readonly ISkillRepository _skillRepo;
-        private readonly IPortfolioRepository _portfolioRepo;
-        private readonly ICurrentUserService _currentUserService;
-
+        private readonly IPortfolioAuthorizationService _portfolioAuthoService;
         public SkillService(ISkillRepository skillRepository,
-            IPortfolioRepository portfolioRepository,
-            ICurrentUserService currentUserService) 
+            IPortfolioAuthorizationService portfolioAuthorizationService) 
         {
             _skillRepo = skillRepository;
-            _portfolioRepo = portfolioRepository;
-            _currentUserService = currentUserService;
+            _portfolioAuthoService = portfolioAuthorizationService;
 
-        }
-        private async Task<bool> IsPortfolioOwnedByCurrentUserAsync(int portfolioId)
-        {
-            var userId = _currentUserService.UserId;
-
-            if (userId == null)
-            {
-                return false;
-            }
-
-            return await _portfolioRepo.IsOwnedByUserAsync(
-                portfolioId,
-                userId.Value);
         }
 
         // return how many skills per portfolio
@@ -49,7 +32,7 @@ namespace Showlio.api.Services
 
         public async Task<SkillServiceResult<IEnumerable<Skill>>> GetAllSkillsForPortfolioAsync(int portfolioId)
         {
-            var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
+            var isOwner = await _portfolioAuthoService.IsOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {
@@ -65,7 +48,7 @@ namespace Showlio.api.Services
         public async Task<SkillServiceResult<Skill>> GetSkillAsync(int skillId, int portfolioId)
         {
 
-            var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
+            var isOwner = await _portfolioAuthoService.IsOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {
@@ -87,7 +70,7 @@ namespace Showlio.api.Services
         public async Task<SkillServiceResult<Skill>> CreateAsync(CreateSkillDto createDto, int portfolioId)
         {
             // User owns the portfolio
-            var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
+            var isOwner = await _portfolioAuthoService.IsOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {
@@ -102,14 +85,11 @@ namespace Showlio.api.Services
                     SkillServiceStatus.SkillLimitReached);
             }
 
-            var skill = await _skillRepo.CreateAsync(
-                createDto.ToEntity(portfolioId));
+            var skill = await _skillRepo.CreateAsync(createDto.ToEntity(portfolioId));
 
             await _skillRepo.SaveChangesAsync();
 
-            return new SkillServiceResult<Skill>(
-                SkillServiceStatus.Success,
-                skill);
+            return new SkillServiceResult<Skill>(SkillServiceStatus.Success, skill);
         }
 
 
@@ -117,7 +97,7 @@ namespace Showlio.api.Services
         public async Task<SkillServiceResult<Skill>> UpdateAsync(UpdateSkillDto updateDto, int skillId, int portfolioId)
         {
 
-            var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
+            var isOwner = await _portfolioAuthoService.IsOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {
@@ -141,7 +121,7 @@ namespace Showlio.api.Services
 
         public async Task<SkillServiceResult<bool>> DeleteAsync(int skillId, int portfolioId)
         {
-            var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
+            var isOwner = await _portfolioAuthoService.IsOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {

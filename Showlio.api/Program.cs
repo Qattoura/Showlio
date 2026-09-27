@@ -14,6 +14,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Repositories;
 using Showlio.api.Services;
 using Showlio.api.validators.Portfolio;
+using Showlio.api.validators.Project;
 using Showlio.api.validators.Skill;
 using System.Text;
 
@@ -70,6 +71,13 @@ builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillDtoValidator>();
+builder.Services.AddScoped<IPortfolioAuthorizationService,PortfolioAuthorizationService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+
+
 
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
