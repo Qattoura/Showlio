@@ -37,7 +37,7 @@ namespace Showlio.api.Services
 
 
             var userId = _currentUserService.UserId;
-            var alreadyExists = await _portfolioRepo.ExistsByUserIdAsync(userId.Value);
+            var alreadyExists = await _portfolioRepo.ExistsByUserIdAsync(userId!.Value);
 
             if (alreadyExists)
                 return null;

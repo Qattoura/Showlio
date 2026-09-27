@@ -20,10 +20,19 @@ namespace Showlio.api.Repositories
             return await _entity.AnyAsync(p => p.UserId == userId);
         }
 
+        public async Task<bool> IsOwnedByUserAsync(int portfolioId, Guid userId)
+        {
+            return await _context.Portfolios
+                .AnyAsync(p => p.Id == portfolioId && p.UserId == userId);
+        }
+
+
         public async Task<Portfolio?> GetByUserIdAsync(Guid userId)
         {
             return await _entity
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
+
+
     }
 }

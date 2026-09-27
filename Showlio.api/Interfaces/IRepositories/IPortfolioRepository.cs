@@ -5,6 +5,7 @@ namespace Showlio.api.Interfaces.IRepositories
     public interface IPortfolioRepository : IRepository<Portfolio>
     {
         Task<Portfolio?> GetByUserIdAsync(Guid userId);
+        Task<bool> IsOwnedByUserAsync(int portfolioId, Guid userId);
         Task<bool> ExistsByUserIdAsync(Guid userId);
     }
 }
