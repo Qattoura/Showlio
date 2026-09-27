@@ -13,6 +13,7 @@ using Showlio.api.Interfaces.IService;
 using Showlio.api.Interfaces.IServices;
 using Showlio.api.Repositories;
 using Showlio.api.Services;
+using Showlio.api.validators.Experience;
 using Showlio.api.validators.Portfolio;
 using Showlio.api.validators.Project;
 using Showlio.api.validators.Skill;
@@ -75,7 +76,9 @@ builder.Services.AddScoped<IPortfolioAuthorizationService,PortfolioAuthorization
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
-
+builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
+builder.Services.AddScoped<IExperienceService, ExperienceService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateExperienceDtoValidator>();
 
 
 
@@ -95,6 +98,24 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
         [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+    });
+
+    options.OrderActionsBy(apiDesc =>
+    {
+        // Controls order of operations WITHIN a tag,
+        // and (indirectly) the order of tags themselves
+        var controllerOrder = new Dictionary<string, int>
+        {
+            ["Account"] = 1,
+            ["Portfolio"] = 2,
+            ["Skill"] = 3,
+            ["Experience"] = 4,
+            ["Project"] = 5,
+        };
+
+        var controller = apiDesc.ActionDescriptor.RouteValues["controller"] ?? "";
+        var order = controllerOrder.TryGetValue(controller, out var o) ? o : 999;
+        return $"{order:D4}_{apiDesc.RelativePath}";
     });
 });
 
