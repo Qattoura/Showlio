@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Showlio.api.Dtos;
 using Showlio.api.Interfaces.IServices;
@@ -12,10 +13,16 @@ namespace Showlio.api.Controllers
     public class SkillController : ControllerBase
     {
         private readonly ISkillService _skillService;
+        private readonly IValidator<CreateSkillDto> _createSkillValidator;
+        private readonly IValidator<UpdateSkillDto> _updateSkillValidator;
 
-        public SkillController(ISkillService skillService) 
+        public SkillController(ISkillService skillService,
+            IValidator<CreateSkillDto> createSkillValidator,
+            IValidator<UpdateSkillDto> updateSkillValidator) 
         {
             _skillService = skillService;
+            _createSkillValidator = createSkillValidator;
+            _updateSkillValidator = updateSkillValidator;
 
         }
 
@@ -59,7 +66,12 @@ namespace Showlio.api.Controllers
         [Authorize]
         public async Task<IActionResult> Create(CreateSkillDto createDto, int portfolioId)
         {
+            var validationResult = await _createSkillValidator.ValidateAsync(createDto);
 
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
             var skill = await _skillService.CreateAsync(createDto, portfolioId);
 
@@ -80,7 +92,12 @@ namespace Showlio.api.Controllers
         [Authorize]
         public async Task<IActionResult> Update(UpdateSkillDto updateDto, int skillId, int portfolioId)
         {
+            var validationResult = await _updateSkillValidator.ValidateAsync(updateDto);
 
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
             var skill = await _skillService.UpdateAsync(updateDto, skillId, portfolioId);
 

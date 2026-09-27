@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Showlio.api.Data;
+using Showlio.api.Dtos;
 using Showlio.api.Filters;
 using Showlio.api.Identity;
 using Showlio.api.Interfaces.IRepositories;
@@ -13,6 +14,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Repositories;
 using Showlio.api.Services;
 using Showlio.api.validators.Portfolio;
+using Showlio.api.validators.Skill;
 using System.Text;
 
 
@@ -67,6 +69,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreatePortfolioDtoValidator
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillDtoValidator>();
 
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
