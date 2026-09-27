@@ -46,17 +46,20 @@ namespace Showlio.api.Services
         {
             return await _skillRepo.CountSkillsForPortfolioAsync(portfolioId);
         }
-       
-        public async Task<IEnumerable<Skill>> GetAllSkillsForPortfolioAsync(int portfolioId)
+
+        public async Task<SkillServiceResult<IEnumerable<Skill>>> GetAllSkillsForPortfolioAsync(int portfolioId)
         {
             var isOwner = await IsPortfolioOwnedByCurrentUserAsync(portfolioId);
 
             if (!isOwner)
             {
-                return Enumerable.Empty<Skill>();
+                return new SkillServiceResult<IEnumerable<Skill>>(
+                    SkillServiceStatus.PortfolioNotOwned);
             }
 
-            return await _skillRepo.GetAllForPortfolioAsync(portfolioId);
+            var skills = await _skillRepo.GetAllForPortfolioAsync(portfolioId);
+
+            return new SkillServiceResult<IEnumerable<Skill>>(SkillServiceStatus.Success, skills);
         }
 
         public async Task<SkillServiceResult<Skill>> GetSkillAsync(int skillId, int portfolioId)

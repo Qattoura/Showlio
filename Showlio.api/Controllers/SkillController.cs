@@ -24,8 +24,15 @@ namespace Showlio.api.Controllers
         [Authorize]
         public async Task<IActionResult> GetAll(int portfolioId)
         {
-            var skills = await _skillService.GetAllSkillsForPortfolioAsync(portfolioId);
-            return Ok(skills.Select(s => s.ToDto()).ToList());
+            var result = await _skillService.GetAllSkillsForPortfolioAsync(portfolioId);
+
+            if (result.Status == Enums.SkillServiceStatus.PortfolioNotOwned)
+            {
+                return StatusCode(403, "User doesn't own the portfolio");
+            }
+
+            return Ok(result.Data!.Select(s => s.ToDto()).ToList());
+
         }
 
         [HttpGet("{skillId}")]
@@ -36,7 +43,7 @@ namespace Showlio.api.Controllers
 
             if (skill.Status == Enums.SkillServiceStatus.PortfolioNotOwned) 
             {
-                return Forbid("user Doesn't own the portfolio");
+                return StatusCode(403, "User doesn't own the portfolio");
             }
 
             if (skill.Status == Enums.SkillServiceStatus.SkillNotFound)
@@ -58,7 +65,7 @@ namespace Showlio.api.Controllers
 
             if (skill.Status == Enums.SkillServiceStatus.PortfolioNotOwned)
             {
-                return Forbid("user Doesn't own the portfolio");
+                return StatusCode(403, "User doesn't own the portfolio");
             }
 
             if (skill.Status == Enums.SkillServiceStatus.SkillLimitReached)
@@ -86,10 +93,10 @@ namespace Showlio.api.Controllers
 
             if (skill.Status == Enums.SkillServiceStatus.PortfolioNotOwned)
             {
-                return Forbid("user Doesn't own the portfolio");
+                return StatusCode(403, "User doesn't own the portfolio");
             }
 
-            return Ok(skill.Data.ToDto);
+            return Ok(skill.Data.ToDto());
 
         }
 
@@ -106,7 +113,7 @@ namespace Showlio.api.Controllers
 
             if (deleted.Status == Enums.SkillServiceStatus.PortfolioNotOwned)
             {
-                return Forbid("user Doesn't own the portfolio");
+                return StatusCode(403, "User doesn't own the portfolio");
             }
 
             return NoContent();
