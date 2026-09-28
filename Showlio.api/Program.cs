@@ -14,9 +14,11 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Repositories;
 using Showlio.api.Services;
 using Showlio.api.validators.Certificate;
+using Showlio.api.validators.ContactItem;
 using Showlio.api.validators.Experience;
 using Showlio.api.validators.Portfolio;
 using Showlio.api.validators.Project;
+using Showlio.api.validators.Service;
 using Showlio.api.validators.Skill;
 using Showlio.api.Validators.Education;
 using System.Text;
@@ -87,6 +89,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateCertificateDtoValidat
 builder.Services.AddScoped<IEducationRepository,EducationRepository>();
 builder.Services.AddScoped<IEducationService,EducationService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateEducationDtoValidator>();
+builder.Services.AddScoped<IServiceRepository,ServiceRepository>();
+builder.Services.AddScoped<IServiceService,ServiceService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateServiceDtoValidator>();
+builder.Services.AddScoped<IContactItemRepository,ContactItemRepository>();
+builder.Services.AddScoped<IContactItemService,ContactItemService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateContactItemDtoValidator>();
 
 
 
@@ -119,7 +127,9 @@ builder.Services.AddSwaggerGen(options =>
             ["Skill"] = 3,
             ["Experience"] = 4,
             ["Project"] = 5,
-            ["Certificate"] = 6
+            ["Certificate"] = 6,
+            ["Education"] = 7,
+            ["Service"] = 8
         };
 
         var controller = apiDesc.ActionDescriptor.RouteValues["controller"] ?? "";
