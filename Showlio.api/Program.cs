@@ -13,10 +13,12 @@ using Showlio.api.Interfaces.IService;
 using Showlio.api.Interfaces.IServices;
 using Showlio.api.Repositories;
 using Showlio.api.Services;
+using Showlio.api.validators.Certificate;
 using Showlio.api.validators.Experience;
 using Showlio.api.validators.Portfolio;
 using Showlio.api.validators.Project;
 using Showlio.api.validators.Skill;
+using Showlio.api.Validators.Education;
 using System.Text;
 
 
@@ -79,6 +81,12 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
 builder.Services.AddScoped<IExperienceService, ExperienceService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateExperienceDtoValidator>();
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+builder.Services.AddScoped<ICertificateService, CertificateService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCertificateDtoValidator>();
+builder.Services.AddScoped<IEducationRepository,EducationRepository>();
+builder.Services.AddScoped<IEducationService,EducationService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateEducationDtoValidator>();
 
 
 
@@ -111,6 +119,7 @@ builder.Services.AddSwaggerGen(options =>
             ["Skill"] = 3,
             ["Experience"] = 4,
             ["Project"] = 5,
+            ["Certificate"] = 6
         };
 
         var controller = apiDesc.ActionDescriptor.RouteValues["controller"] ?? "";
