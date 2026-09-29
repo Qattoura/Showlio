@@ -20,6 +20,7 @@ using Showlio.api.validators.Portfolio;
 using Showlio.api.validators.Project;
 using Showlio.api.validators.Service;
 using Showlio.api.validators.Skill;
+using Showlio.api.validators.Template;
 using Showlio.api.Validators.Education;
 using System.Text;
 
@@ -95,7 +96,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateServiceDtoValidator>(
 builder.Services.AddScoped<IContactItemRepository,ContactItemRepository>();
 builder.Services.AddScoped<IContactItemService,ContactItemService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateContactItemDtoValidator>();
-
+builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTemplateValidator>();
 
 
 //builder.Services.AddSwaggerGen();
@@ -129,7 +132,9 @@ builder.Services.AddSwaggerGen(options =>
             ["Project"] = 5,
             ["Certificate"] = 6,
             ["Education"] = 7,
-            ["Service"] = 8
+            ["Service"] = 8,
+            ["ContactItem"] = 9,
+            ["Template"] = 10
         };
 
         var controller = apiDesc.ActionDescriptor.RouteValues["controller"] ?? "";

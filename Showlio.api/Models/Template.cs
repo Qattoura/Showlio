@@ -11,6 +11,7 @@
         public string Description { get; set; } = string.Empty;
 
         public string ColorTheme { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
 
         // Navigation property
         public ICollection<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
