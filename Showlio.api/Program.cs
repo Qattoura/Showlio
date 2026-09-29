@@ -99,6 +99,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateContactItemDtoValidat
 builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateTemplateValidator>();
+builder.Services.AddScoped<IPublicPortfolioService,PublicPortfolioService>();
 
 
 //builder.Services.AddSwaggerGen();
@@ -125,16 +126,17 @@ builder.Services.AddSwaggerGen(options =>
         // and (indirectly) the order of tags themselves
         var controllerOrder = new Dictionary<string, int>
         {
-            ["Account"] = 1,
-            ["Portfolio"] = 2,
-            ["Skill"] = 3,
-            ["Experience"] = 4,
-            ["Project"] = 5,
-            ["Certificate"] = 6,
-            ["Education"] = 7,
-            ["Service"] = 8,
-            ["ContactItem"] = 9,
-            ["Template"] = 10
+            ["PublicPortfolio"] = 1,
+            ["Account"] = 2,
+            ["Portfolio"] = 3,
+            ["Skill"] = 4,
+            ["Experience"] = 5,
+            ["Project"] = 6,
+            ["Certificate"] = 7,
+            ["Education"] = 8,
+            ["Service"] = 9,
+            ["ContactItem"] = 10,
+            ["Template"] = 11
         };
 
         var controller = apiDesc.ActionDescriptor.RouteValues["controller"] ?? "";

@@ -7,5 +7,6 @@ namespace Showlio.api.Interfaces.IRepositories
         Task<Portfolio?> GetByUserIdAsync(Guid userId);
         Task<bool> IsOwnedByUserAsync(int portfolioId, Guid userId);
         Task<bool> ExistsByUserIdAsync(Guid userId);
+        Task<Portfolio?> GetPublishedByUsernameAsync(string username);
     }
 }

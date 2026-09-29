@@ -33,6 +33,21 @@ namespace Showlio.api.Repositories
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 
+        public async Task<Portfolio?> GetPublishedByUsernameAsync(string username)
+        {
+            return await _context.Portfolios
+                .Include(p => p.Skills)
+                .Include(p => p.Projects)
+                .Include(p => p.Experiences)
+                .Include(p => p.Educations)
+                .Include(p => p.Certificates)
+                .Include(p => p.Services)
+                .Include(p => p.ContactItems)
+                .FirstOrDefaultAsync(p =>
+                    p.User.UserName == username &&
+                    p.IsPublished);
+        }
+
 
     }
 }
