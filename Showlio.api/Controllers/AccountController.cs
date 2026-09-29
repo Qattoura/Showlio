@@ -150,40 +150,5 @@ namespace Showlio.api.Controllers
             return Ok(userId);
         }
 
-
-        [HttpPost("make-me-admin")]
-        [Authorize]
-        public async Task<IActionResult> MakeMeAdmin()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (await _userManager.IsInRoleAsync(user, "Admin"))
-            {
-                return Ok("User is already an Admin");
-            }
-
-            var result = await _userManager.AddToRoleAsync(user, "Admin");
-
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
-            return Ok("Current user is now an Admin");
-        }
-
-
     }
 }
