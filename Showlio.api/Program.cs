@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Showlio.api;
 using Showlio.api.Data;
 using Showlio.api.Dtos;
 using Showlio.api.Filters;
@@ -29,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add connection string
-builder.Services.AddDbContext<ApplicationDbContext>( options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -65,41 +66,7 @@ builder.Services
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
-builder.Services.AddScoped<IPortfolioService, PortfolioService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreatePortfolioDtoValidator>();
-builder.Services.AddScoped<ISkillService, SkillService>();
-builder.Services.AddScoped<ISkillRepository, SkillRepository>();
-builder.Services.AddScoped<ISkillService, SkillService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillDtoValidator>();
-builder.Services.AddScoped<IPortfolioAuthorizationService,PortfolioAuthorizationService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
-builder.Services.AddScoped<IExperienceService, ExperienceService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateExperienceDtoValidator>();
-builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
-builder.Services.AddScoped<ICertificateService, CertificateService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateCertificateDtoValidator>();
-builder.Services.AddScoped<IEducationRepository,EducationRepository>();
-builder.Services.AddScoped<IEducationService,EducationService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateEducationDtoValidator>();
-builder.Services.AddScoped<IServiceRepository,ServiceRepository>();
-builder.Services.AddScoped<IServiceService,ServiceService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateServiceDtoValidator>();
-builder.Services.AddScoped<IContactItemRepository,ContactItemRepository>();
-builder.Services.AddScoped<IContactItemService,ContactItemService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateContactItemDtoValidator>();
-builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
-builder.Services.AddScoped<ITemplateService, TemplateService>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateTemplateValidator>();
-builder.Services.AddScoped<IPublicPortfolioService,PublicPortfolioService>();
+builder.AddServiceRegistrations();
 
 
 //builder.Services.AddSwaggerGen();
