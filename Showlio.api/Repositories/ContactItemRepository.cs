@@ -18,6 +18,7 @@ namespace Showlio.api.Repositories
             GetAllForPortfolioAsync(int portfolioId)
         {
             return await _context.ContactItems
+                .AsNoTracking()
                 .Where(x => x.PortfolioId == portfolioId)
                 .ToListAsync();
         }
@@ -28,14 +29,13 @@ namespace Showlio.api.Repositories
                 int portfolioId)
         {
             return await _context.ContactItems
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x =>
                     x.Id == contactItemId &&
                     x.PortfolioId == portfolioId);
         }
 
-        public async Task<int>
-            CountContactItemsForPortfolioAsync(
-                int portfolioId)
+        public async Task<int>CountContactItemsForPortfolioAsync(int portfolioId)
         {
             return await _context.ContactItems
                 .CountAsync(x =>

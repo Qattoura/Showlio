@@ -23,7 +23,7 @@ namespace Showlio.api.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await _entity.ToListAsync();
+            return await _entity.AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity> CreateAsync(TEntity entity)

@@ -13,10 +13,10 @@ namespace Showlio.api.Repositories
         {
         }
 
-        public async Task<IEnumerable<Certificate>>
-            GetAllForPortfolioAsync(int portfolioId)
+        public async Task<IEnumerable<Certificate>>GetAllForPortfolioAsync(int portfolioId)
         {
             return await _context.Certificates
+                .AsNoTracking()
                 .Where(c => c.PortfolioId == portfolioId)
                 .ToListAsync();
         }
@@ -26,6 +26,7 @@ namespace Showlio.api.Repositories
             int portfolioId)
         {
             return await _context.Certificates
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c =>
                     c.Id == certificateId &&
                     c.PortfolioId == portfolioId);

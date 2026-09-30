@@ -13,7 +13,7 @@ namespace Showlio.api.Repositories
 
         public async Task<IEnumerable<Experience>> GetAllForPortfolioAsync(int portfolioId)
         {
-            return await _context.Experiences
+            return await _context.Experiences.AsNoTracking()
                 .Where(e => e.PortfolioId == portfolioId)
                 .ToListAsync();
         }
@@ -22,7 +22,7 @@ namespace Showlio.api.Repositories
             int experienceId,
             int portfolioId)
         {
-            return await _context.Experiences
+            return await _context.Experiences.AsNoTracking()
                 .FirstOrDefaultAsync(e =>
                     e.Id == experienceId &&
                     e.PortfolioId == portfolioId);

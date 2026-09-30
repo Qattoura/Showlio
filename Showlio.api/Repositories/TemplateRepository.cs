@@ -13,12 +13,12 @@ namespace Showlio.api.Repositories
 
         public async Task<IEnumerable<Template>> GetActiveTemplatesAsync()
         {
-            return await _context.Templates.Where(t => t.IsActive).ToListAsync();
+            return await _context.Templates.AsNoTracking().Where(t => t.IsActive).ToListAsync();
         }
 
         public async Task<Template?> GetActiveTemplateByIdAsync(int id)
         {
-            return await _context.Templates
+            return await _context.Templates.AsNoTracking()
                 .FirstOrDefaultAsync(t =>
                     t.Id == id &&
                     t.IsActive);

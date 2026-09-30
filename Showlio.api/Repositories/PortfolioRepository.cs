@@ -30,12 +30,15 @@ namespace Showlio.api.Repositories
         public async Task<Portfolio?> GetByUserIdAsync(Guid userId)
         {
             return await _entity
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 
         public async Task<Portfolio?> GetPublishedByUsernameAsync(string username)
         {
             return await _context.Portfolios
+                .AsNoTracking()
+                .AsSplitQuery()
                 .Include(p => p.Skills)
                 .Include(p => p.Projects)
                 .Include(p => p.Experiences)

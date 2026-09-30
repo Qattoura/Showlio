@@ -18,7 +18,7 @@ namespace Showlio.api.Repositories
         public async Task<IEnumerable<Education>>
             GetAllForPortfolioAsync(int portfolioId)
         {
-            return await _context.Educations
+            return await _context.Educations.AsNoTracking()
                 .Where(x => x.PortfolioId == portfolioId)
                 .ToListAsync();
         }
@@ -28,7 +28,7 @@ namespace Showlio.api.Repositories
                 int educationId,
                 int portfolioId)
         {
-            return await _context.Educations
+            return await _context.Educations.AsNoTracking()
                 .FirstOrDefaultAsync(x =>
                     x.Id == educationId &&
                     x.PortfolioId == portfolioId);

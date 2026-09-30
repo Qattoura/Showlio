@@ -13,13 +13,13 @@ namespace Showlio.api.Repositories
 
         public async Task<IEnumerable<Skill>> GetAllForPortfolioAsync(int portfolioId)
         {
-            return await _context.Skills.Where(s => s.PortfolioId == portfolioId).ToListAsync();
+            return await _context.Skills.AsNoTracking().Where(s => s.PortfolioId == portfolioId).ToListAsync();
         }
 
         public async Task<Skill?> GetByIdForPortfolioAsync(int skillId, int portfolioId)
         {
             
-            return await _context.Skills.FirstOrDefaultAsync(s => s.Id == skillId && s.PortfolioId == portfolioId);
+            return await _context.Skills.AsNoTracking().FirstOrDefaultAsync(s => s.Id == skillId && s.PortfolioId == portfolioId);
         }
 
         public async Task<int> CountSkillsForPortfolioAsync(int portfolioId)

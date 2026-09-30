@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,23 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Showlio.api;
 using Showlio.api.Data;
-using Showlio.api.Dtos;
-using Showlio.api.Filters;
 using Showlio.api.Identity;
-using Showlio.api.Interfaces.IRepositories;
-using Showlio.api.Interfaces.IService;
-using Showlio.api.Interfaces.IServices;
-using Showlio.api.Repositories;
-using Showlio.api.Services;
-using Showlio.api.validators.Certificate;
-using Showlio.api.validators.ContactItem;
-using Showlio.api.validators.Experience;
-using Showlio.api.validators.Portfolio;
-using Showlio.api.validators.Project;
-using Showlio.api.validators.Service;
-using Showlio.api.validators.Skill;
-using Showlio.api.validators.Template;
-using Showlio.api.Validators.Education;
 using System.Text;
 
 
