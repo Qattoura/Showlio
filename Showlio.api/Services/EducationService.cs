@@ -5,6 +5,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Models;
 using Showlio.api.Results;
 using Showlio.api.Mappers;
+using Showlio.api.Globals;
 
 namespace Showlio.api.Services
 {
@@ -14,7 +15,6 @@ namespace Showlio.api.Services
         private readonly IPortfolioAuthorizationService
             _portfolioAuthorizationService;
 
-        private const int MaxEducationsPerPortfolio = 5;
 
         public EducationService(
             IEducationRepository educationRepo,
@@ -95,7 +95,7 @@ namespace Showlio.api.Services
             var educationCount =
                 await GetEducationCountAsync(portfolioId);
 
-            if (educationCount >= MaxEducationsPerPortfolio)
+            if (educationCount >= GlobalConstants.EducationMax)
             {
                 return new EducationServiceResult<Education>(
                     EducationServiceStatus.EducationLimitReached);

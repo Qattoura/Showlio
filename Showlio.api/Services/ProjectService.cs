@@ -1,5 +1,6 @@
 ﻿using Showlio.api.Dtos;
 using Showlio.api.Enums;
+using Showlio.api.Globals;
 using Showlio.api.Interfaces.IRepositories;
 using Showlio.api.Interfaces.IServices;
 using Showlio.api.Mappers;
@@ -71,7 +72,7 @@ namespace Showlio.api.Services
             }
 
             // Maximum 10 projects
-            if (await GetProjectCountAsync(portfolioId) >= 10)
+            if (await GetProjectCountAsync(portfolioId) >= GlobalConstants.ProjectMax)
             {
                 return new ProjectServiceResult<Project>(ProjectServiceStatus.ProjectLimitReached);
             }

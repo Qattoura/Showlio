@@ -5,6 +5,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Models;
 using Showlio.api.Results;
 using Showlio.api.Mappers;
+using Showlio.api.Globals;
 
 namespace Showlio.api.Services
 {
@@ -15,7 +16,6 @@ namespace Showlio.api.Services
         private readonly IPortfolioAuthorizationService
             _portfolioAuthorizationService;
 
-        private const int MaxContactItemsPerPortfolio = 10;
 
         public ContactItemService(
             IContactItemRepository contactItemRepo,
@@ -104,7 +104,7 @@ namespace Showlio.api.Services
             var contactItemCount =
                 await GetContactItemCountAsync(portfolioId);
 
-            if (contactItemCount >= MaxContactItemsPerPortfolio)
+            if (contactItemCount >= GlobalConstants.ContactItemMax)
             {
                 return new ContactItemServiceResult<ContactItem>(
                     ContactItemServiceStatus.ContactItemLimitReached);

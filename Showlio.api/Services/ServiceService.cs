@@ -5,6 +5,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Models;
 using Showlio.api.Results;
 using Showlio.api.Mappers;
+using Showlio.api.Globals;
 
 namespace Showlio.api.Services
 {
@@ -15,7 +16,6 @@ namespace Showlio.api.Services
         private readonly IPortfolioAuthorizationService
             _portfolioAuthorizationService;
 
-        private const int MaxServicesPerPortfolio = 10;
 
         public ServiceService(
             IServiceRepository serviceRepo,
@@ -95,7 +95,7 @@ namespace Showlio.api.Services
             var serviceCount =
                 await GetServiceCountAsync(portfolioId);
 
-            if (serviceCount >= MaxServicesPerPortfolio)
+            if (serviceCount >= GlobalConstants.ServiceMax)
             {
                 return new ServiceServiceResult<Service>(
                     ServiceServiceStatus.ServiceLimitReached);

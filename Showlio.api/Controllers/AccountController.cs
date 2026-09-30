@@ -139,16 +139,5 @@ namespace Showlio.api.Controllers
             });
         }
 
-  
-
-        //[Authorize(Roles = "user")]
-        [Authorize]
-        [HttpGet("test-auth")]
-        public IActionResult TestAuth()
-        {
-            var userId = _currentUserService.UserId;
-            return Ok(userId);
-        }
-
     }
 }

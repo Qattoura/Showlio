@@ -5,6 +5,7 @@ using Showlio.api.Interfaces.IServices;
 using Showlio.api.Mappers;
 using Showlio.api.Models;
 using Showlio.api.Results;
+using Showlio.api.Globals;
 
 namespace Showlio.api.Services
 {
@@ -83,7 +84,7 @@ namespace Showlio.api.Services
             }
 
             // Maximum 10 certificates
-            if (await GetCertificateCountAsync(portfolioId) >= 10)
+            if (await GetCertificateCountAsync(portfolioId) >= GlobalConstants.CertificateMax)
             {
                 return new CertificateServiceResult<Certificate>(
                     CertificateServiceStatus.CertificateLimitReached);

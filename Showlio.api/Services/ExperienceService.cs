@@ -1,5 +1,6 @@
 ﻿using Showlio.api.Dtos;
 using Showlio.api.Enums;
+using Showlio.api.Globals;
 using Showlio.api.Interfaces.IRepositories;
 using Showlio.api.Interfaces.IServices;
 using Showlio.api.Mappers;
@@ -89,7 +90,7 @@ namespace Showlio.api.Services
             }
 
             // Maximum 10 experiences
-            if (await GetExperienceCountAsync(portfolioId) >= 10)
+            if (await GetExperienceCountAsync(portfolioId) >= GlobalConstants.ExperienceMax)
             {
                 return new ExperienceServiceResult<Experience>(
                     ExperienceServiceStatus.ExperienceLimitReached);
