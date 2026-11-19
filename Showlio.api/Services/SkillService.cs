@@ -88,6 +88,12 @@ namespace Showlio.api.Services
 
             var skill = await _skillRepo.CreateAsync(createDto.ToEntity(portfolioId));
 
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine(skill.Id);
+            Console.WriteLine(skill.Name);
+            Console.WriteLine(skill.PortfolioId);
+            Console.WriteLine("-------------------------------");
+
             await _skillRepo.SaveChangesAsync();
 
             return new SkillServiceResult<Skill>(SkillServiceStatus.Success, skill);

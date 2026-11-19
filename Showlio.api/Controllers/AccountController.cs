@@ -23,6 +23,8 @@ namespace Showlio.api.Controllers
         private readonly ICurrentUserService _currentUserService;
         private readonly IValidator<LoginDto> _loginDtoValidator;
         private readonly IValidator<RegisterDto> _registerDtoValidator;
+        private readonly AppUser _dummyUser = new();
+        private readonly string _dummyPasswordHash;
 
         public AccountController(UserManager<AppUser> userManager,
             ITokenService tokenService, ICurrentUserService currentUserService,
@@ -34,6 +36,13 @@ namespace Showlio.api.Controllers
             _currentUserService = currentUserService;
             _loginDtoValidator = loginDtoValidator;
             _registerDtoValidator = registerDtoValidator;
+
+            // Compared against when the phone number isn't registered, so the response takes as long
+            // as a wrong password and doesn't reveal which numbers have accounts.
+            _dummyPasswordHash = _userManager.PasswordHasher.HashPassword(
+            _dummyUser,
+            Guid.NewGuid().ToString()
+);
 
         }
 
@@ -119,6 +128,11 @@ namespace Showlio.api.Controllers
 
             if (appUser == null)
             {
+                _userManager.PasswordHasher.VerifyHashedPassword(
+                _dummyUser,
+                _dummyPasswordHash,
+                loginDto.Password
+                );
                 return Unauthorized("Invalid username or password.");
             }
 
